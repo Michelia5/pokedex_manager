@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collezione - Pokedex Manager</title>
+    <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+    <link rel="stylesheet" href="/style/output.css">
+    <style>
+
+        /* stile per i dispositivi mobili */
+        @media only screen and (max-width: 767px) {
+
+            /* Nascondi il titolo nel logo */
+            .slide-header .text-xl {
+                display: none;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            .grid {
+                flex-direction: column;
+            }
+            .toggle-section {
+                display: none;
+            }
+            .toggle-section.active {
+                display: block;
+            }
+            .toggle-header {
+                cursor: pointer;
+                background-color: #007bff;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            .toggle-header.hover {
+                background-color: #0056b3;
+            }
+
+        }
+
+        header {
+            color: black;
+            transition: transform 0.3s ease;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        /* Stili per il menu laterale */
+            #side-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #side-menu.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-link:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-header {
+            animation: slideInFromRight 1s ease-out forwards;
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        h1, p, ul, a {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            text-align: center;
+            color: black;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .center-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-direction: column;
+            color: black;
+        }
+        
+        .box {
+            border: 2px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            width: 200px;
+        }
+        .hidden {
+            display: none;
+        }   
+        
+        /* Stili per la barra di ricerca */
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            border: 1px solid #ccc;
+            border-radius: 20px 0 0 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            outline: none;
+            color: #fff;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            padding: 8px 16px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Stili per la griglia */
+        .grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .column {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .pokemon-card {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .pokemon-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pokemon-card img {
+            max-width: 80px;
+            margin-right: 20px;
+        }
+
+        .pokemon-card-content {
+            flex: 1;
+        }
+
+        .pokemon-card p {
+            margin: 10px 0;
+            color: black;
+        }
+
+        .pokemon-card button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        .pokemon-card button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Stili per il titolo */
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        body {
+            background-image: url("images/other/pokedex-wallpapers.png");
+        }
+
+        .text-with-background {
+            color: white; 
+            background: rgba(0, 0, 0, 0.6); 
+            padding: 0.5em 1em; 
+            border-radius: 0.25em; 
+        }
+
+        .stats-container {
+            width: 300px; /* Larghezza dei riquadri delle statistiche */
+            margin: 0 auto; /* Centrare il contenitore rispetto alla larghezza della pagina */
+        }
+
+        .stats-card {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Rendere i riquadri delle statistiche larghi al 100% all'interno del contenitore */
+            box-sizing: border-box; /* Considerare il padding e il bordo nella larghezza */
+        }
+
+        .stats-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .stats-card p {
+            margin: 5px 0;
+        }
+
+        .image-container {
+            text-align: center; /* Centra l'immagine orizzontalmente */
+            margin-top: 20px; /* Spazio tra il riquadro delle statistiche e l'immagine */
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4 px-6 flex items-center justify-between">
+        <!-- Pulsante del menu e logo -->
+        <div class="flex items-center space-x-4 slide-header">
+            <button id="menu-button" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+            <span class="text-xl text-black font-bold">Pokédex Manager</span>
+        </div>
+        <!-- Barra di ricerca -->
+        <form action="/ricerca-pokemon" method="post" class="search-form">
+            <input type="text" name="query" placeholder="Cerca il Pokémon" class="search-input">
+            <button type="submit" class="search-button">Cerca</button>
+        </form>
+    </header>
+
+    <!-- Menu laterale -->
+    <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+        <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+            <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+        </div> <!-- Sezione nera in cima -->
+            
+        <div style="height: 75%; background-color: white;">
+            <ul class="mt-16 space-y-4 text-black">
+                <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+            </ul>
+            <div class="flex justify-center">
+                <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                    X
+                </button>
+            </div>
+            <div class="flex justify-center items-center mt-8">
+                <img src="images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+            </div>
+        </div>
+        <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+    </nav>
+
+    <!-- Contenuto Principale -->
+    <div class="container">
+        <div class="grid">
+            <!-- Colonna Collezione -->
+            <div class="column">
+                <div id="collection-header" class="text-2xl font-bold mb-4 text-center text-white text-with-background">Collezione</div>
+                <div id="collection-section">
+                    <div id="collection">
+                        <% collection.forEach(pokemon => { %>
+                        <div class="pokemon-card">
+                            <a href="/pokemon/<%= pokemon.national_number %>">
+                                <img src="/images/small/<%= ('000' + pokemon.national_number).slice(-3) %>.png" alt="<%= pokemon.pokemon.english_name %>">
+                            </a>
+                            <div class="pokemon-card-content">
+                                <p><%= pokemon.pokemon.english_name %></p>
+                                <div class="button-group">
+                                    <button onclick="rimuoviDaCollezione(<%= pokemon.national_number %>)">Rimuovi</button>
+                                    <button onclick="spostaPokemon(<%= pokemon.national_number %>, true)">Sposta in Desideri</button>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Riquadri delle statistiche -->
+            <div class="center-boxes">
+                <div class="stats-container">
+                    <div class="stats-card">
+                        <h3 class="font-bold text-xl">Statistiche della Collezione:</h3>
+                        <p class="text-lg font-semibold">-Numero di Pokémon: <span id="collectionCount">0</span></p>
+                        <p class="text-lg font-semibold">-Tipo più presente: <span id="mostCommonType">-</span></p>
+                        <p class="text-lg font-semibold">-Generazione più presente: <span id="mostCommonGen">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Colonna Lista Desideri -->
+            <div class="column">
+                <div id="wishlist-header" class="toggle-header text-2xl font-bold mb-4 text-center text-white text-with-background">Lista Desideri</div>
+                <div id="wishlist-section" class="toggle-section">
+                    <div id="wishlist">
+                        <% wishlist.forEach(pokemon => { %>
+                        <div class="pokemon-card">
+                            <a href="/pokemon/<%= pokemon.national_number %>">
+                                <img src="/images/small/<%= ('000' + pokemon.national_number).slice(-3) %>.png" alt="<%= pokemon.pokemon.english_name %>">
+                            </a>
+                            <div class="pokemon-card-content">
+                                <p><%= pokemon.pokemon.english_name %></p>
+                                <div class="button-group">
+                                    <button onclick="rimuoviDaCollezione(<%= pokemon.national_number %>)">Rimuovi</button>
+                                    <button onclick="spostaPokemon(<%= pokemon.national_number %>, false)">Sposta in Collezione</button>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-md py-4">
+        <div class="mx-auto text-center">
+            <div style="display: inline-block; margin-right: 20px;">
+                <p>© 2024 Pokédex Manager. Tutti i diritti riservati.</p>
+            </div>
+            <div style="display: inline-block; margin-right: 20px;">
+                <a href="/privacy" class="inline-block mx-4 hover:underline">Privacy</a>
+            </div>
+            <div style="display: inline-block;">
+                <a href="/termini" class="inline-block mx-4 hover:underline">Termini e condizioni</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        const menuButton = document.getElementById('menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+    
+        // evento click al pulsante del menu per aprire il menu laterale
+        menuButton.addEventListener('click', () => {
+            sideMenu.classList.add('open');
+        });
+    
+        // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+        closeMenuButton.addEventListener('click', () => {
+            sideMenu.classList.remove('open');
+        });
+
+
+        async function rimuoviDaCollezione(pokemonId) {
+            const response = await fetch('/rimuovi_da_collezione', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pokemonId })
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Errore durante la rimozione del Pokémon');
+            }
+        }
+
+        async function spostaPokemon(pokemonId, isWishlist) {
+            const response = await fetch('/sposta_pokemon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pokemonId, isWishlist })
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Errore durante lo spostamento del Pokémon');
+            }
+        }
+
+        // Ottieni tutti gli elementi <a> che avvolgono le immagini del Pokémon
+        const pokemonLinks = document.querySelectorAll('.pokemon-card a');
+
+        // Aggiungi un gestore di eventi per ciascun link
+        pokemonLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                // Impedisci il comportamento predefinito del link per evitare il reindirizzamento immediato
+                event.preventDefault();
+
+                // Ottieni l'URL della pagina dei dettagli del Pokémon dal link
+                const pokemonDetailURL = link.getAttribute('href');
+
+                // Reindirizza l'utente alla pagina dei dettagli del Pokémon
+                window.location.href = pokemonDetailURL;
+            });
+        });
+
+        // Funzione per ottenere e visualizzare solo le statistiche sulla collezione
+        async function getAndDisplayCollectionStats() {
+            try {
+                // Effettua una richiesta GET al backend per ottenere i Pokémon della collezione
+                const response = await fetch('http://localhost:8000/api/collezione-pokemon');
+                const collection = await response.json();
+
+                // Calcola le statistiche sulla collezione
+                let stats = {
+                    numPokemon: collection.length,
+                    tipoPiùPresente: '',
+                    genPiùPresente: ''
+                };
+
+                let tipoCounts = {};
+                let genCounts = {};
+
+                collection.forEach(entry => {
+                    const { primary_type, gen } = entry.pokemon;
+                    tipoCounts[primary_type] = (tipoCounts[primary_type] || 0) + 1;
+                    genCounts[gen] = (genCounts[gen] || 0) + 1;
+                });
+
+                stats.tipoPiùPresente = Object.keys(tipoCounts).reduce((a, b) => tipoCounts[a] > tipoCounts[b] ? a : b);
+                stats.genPiùPresente = Object.keys(genCounts).reduce((a, b) => genCounts[a] > genCounts[b] ? a : b);
+
+                // Aggiorna il contenuto HTML con le statistiche ottenute
+                document.getElementById('collectionCount').textContent = stats.numPokemon;
+                document.getElementById('mostCommonType').textContent = stats.tipoPiùPresente;
+                document.getElementById('mostCommonGen').textContent = stats.genPiùPresente;
+            } catch (error) {
+                console.error('Errore nel recupero delle statistiche sulla collezione:', error);
+            }
+        }
+
+        // Chiama la funzione per ottenere e visualizzare le statistiche sulla collezione quando la pagina è completamente caricata
+        window.addEventListener('load', () => {
+            getAndDisplayCollectionStats();
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const collectionHeader = document.getElementById('collection-header');
+            const collectionSection = document.getElementById('collection-section');
+            const wishlistHeader = document.getElementById('wishlist-header');
+            const wishlistSection = document.getElementById('wishlist-section');
+
+            collectionHeader.addEventListener('click', () => {
+                collectionSection.classList.toggle('active');
+            });
+
+            wishlistHeader.addEventListener('click', () => {
+                wishlistSection.classList.toggle('active');
+            });
+        });
+
+    </script>    
+</body>
+</html>

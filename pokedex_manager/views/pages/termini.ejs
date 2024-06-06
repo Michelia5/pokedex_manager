@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Manager - Privacy</title>
+    <!-- Icona -->
+    <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+    <link rel="stylesheet" href="/style/output.css">
+    <style>
+
+        /* Includi lo stile per i dispositivi mobili */
+        @media only screen and (max-width: 767px) {
+            /* Nascondi il titolo nel logo */
+            .slide-header .text-xl {
+                display: none;
+            }
+
+            /* Riduci la dimensione del testo della scritta "Pokédex Manager" nella sezione 1 */
+            .section-1 h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .section {
+            display: flex;
+            flex-direction: column; /* Dispone gli elementi in colonna */
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s;
+        }
+
+        .section-1 {
+            background-image: url('images/other/pokeball2.jpg');
+        }
+        header {
+            color: black;
+            transition: transform 0.3s ease;
+            position: relative;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        footer {
+            color: black;
+        }
+
+        /* Stili per il testo con sfondo semitrasparente */
+        .text-with-background {
+            color: white; 
+            background: rgba(0, 0, 0, 0.5); 
+            padding: 0.5em 1em; 
+            border-radius: 0.25em; 
+        }
+
+        /* Stili per il menu laterale */
+        #side-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #side-menu.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-link:hover {
+            text-decoration: underline;
+        }
+
+        .section-1 h1 {
+            font-size: 4rem;
+            margin-bottom: 120px; 
+            color: white;
+            text-shadow: -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000; /* Aggiungi contorno nero al testo */
+        }
+
+        @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+        }
+
+        .slide-header {
+            animation: slideInFromRight 1s ease-out forwards;
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        h1, h2, p {
+        animation: fadeIn 0.8s ease-in-out;
+        
+        }
+
+        /* Stili per la barra di ricerca */
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            border: 1px solid #ccc;
+            border-radius: 20px 0 0 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            outline: none;
+            color: #fff; /* Testo bianco */
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            padding: 8px 16px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-4 slide-header">
+            <button id="menu-button" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <!-- Logo e titolo -->
+            <div class="slide-header flex items-center space-x-4 ">
+                <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+                <span class="text-xl text-black font-bold">Pokédex Manager</span>
+            </div>
+        </div>
+        <div class="slide-header">
+            <form action="/ricerca-pokemon" method="post" class="search-form">
+                <input type="text" name="query" placeholder="Cerca il Pokémon" class="search-input">
+                <button type="submit" class="search-button">Cerca</button>
+            </form>          
+        </div>
+    </header>
+    
+    <!-- Menu laterale -->
+    <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+        <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+            <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+        </div> <!-- Sezione nera in cima -->
+            
+        <div style="height: 75%; background-color: white;">
+            <ul class="mt-16 space-y-4 text-black">
+                <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+            </ul>
+            <div class="flex justify-center">
+                <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                    X
+                </button>
+            </div>
+            <div class="flex justify-center items-center mt-8">
+                <img src="images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+            </div>
+        </div>
+        <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+    </nav>
+
+    <!-- Contenuto principale -->
+    <div class="section section-1 container mx-auto px-6 py-8">
+        <div class="text-with-background">
+            <h2 class="mt-6 text-xl font-bold">Termini e Condizioni di Utilizzo</h2>
+            <p class="mt-4">Ultimo aggiornamento: 22/05/2024</p>
+            <p class="mt-4">Benvenuto su Pokédex Manager. L'utilizzo del nostro sito web è regolato dai presenti Termini e Condizioni. Si prega di leggere attentamente i termini seguenti prima di utilizzare il sito.</p>
+            <h2 class="mt-6 text-xl font-bold">1. Accettazione dei Termini</h2>
+            <p class="mt-4">Utilizzando il nostro sito, accetti di essere vincolato dai presenti Termini e Condizioni e dalla nostra Privacy Policy. Se non sei d'accordo con uno qualsiasi dei termini, ti invitiamo a non utilizzare il sito.</p>
+
+            <h2 class="mt-6 text-xl font-bold">2. Descrizione del Servizio</h2>
+            <p class="mt-4">Pokédex Manager è un'applicazione web che permette agli utenti di esplorare e gestire un database di Pokémon. Gli utenti possono visualizzare informazioni dettagliate sui Pokémon, cercare specifici Pokémon, e gestire una collezione personale.</p>
+            <h2 class="mt-6 text-xl font-bold">3. Modifiche ai Termini</h2>
+            <p class="mt-4">Ci riserviamo il diritto di modificare questi Termini in qualsiasi momento. Le modifiche saranno efficaci non appena pubblicate sul sito. Continuando a utilizzare il sito dopo la pubblicazione delle modifiche, accetti i nuovi Termini.</p>
+
+            <h2 class="mt-6 text-xl font-bold">4. Account Utente</h2>
+            <p class="mt-4">Per utilizzare alcune funzionalità del sito, potrebbe essere necessario creare un account. Sei responsabile della sicurezza delle informazioni del tuo account e della riservatezza della tua password. Devi notificarci immediatamente qualsiasi uso non autorizzato del tuo account.</p>
+
+            <h2 class="mt-6 text-xl font-bold">5. Uso Consentito</h2>
+            <p class="mt-4">Puoi utilizzare il sito solo per scopi legali e in conformità con i presenti Termini. È vietato:</p>
+            <p class="mt-4">- Utilizzare il sito in modo che violi leggi o regolamenti applicabili.</p>
+            <p class="mt-4">- Tentare di ottenere accesso non autorizzato al sito o ai suoi server.</p>
+            <p class="mt-4">- Interferire con il funzionamento del sito.</p>
+
+            <h2 class="mt-6 text-xl font-bold">6. Proprietà Intellettuale</h2>
+            <p class="mt-4">Tutti i contenuti presenti sul sito, inclusi testo, grafica, loghi, immagini, e software, sono di proprietà di Pokedex Manager o dei suoi licenziatari e sono protetti dalle leggi sul copyright e altre leggi sulla proprietà intellettuale.</p>
+
+            <h2 class="mt-6 text-xl font-bold">7. Limitazione di Responsabilità</h2>
+            <p class="mt-4">Pokedex Manager non sarà responsabile per eventuali danni diretti, indiretti, incidentali, speciali, consequenziali o punitivi derivanti dall'uso del sito o dall'incapacità di utilizzarlo.</p>
+
+            <h2 class="mt-6 text-xl font-bold">8. Legge Applicabile</h2>
+            <p class="mt-4">Questi Termini sono regolati e interpretati secondo le leggi italiane. Qualsiasi controversia derivante dall'uso del sito sarà soggetta alla giurisdizione esclusiva dei tribunali italiani.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-md py-4 border-2">
+        <div class="container mx-auto text-center">
+            <div style="display: inline-block; margin-right: 20px;">
+                <p>© 2024 Pokédex Manager. Tutti i diritti riservati.</p>
+            </div>
+            <div style="display: inline-block; margin-right: 20px;">
+                <a href="/privacy" class="inline-block mx-4 hover:underline">Privacy Policy</a>
+            </div>
+            <div style="display: inline-block;">
+                <a href="/termini" class="inline-block mx-4 hover:underline">Termini e condizioni</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+    
+        // evento click al pulsante del menu per aprire il menu laterale
+        menuButton.addEventListener('click', () => {
+            sideMenu.classList.add('open');
+        });
+    
+        // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+        closeMenuButton.addEventListener('click', () => {
+            sideMenu.classList.remove('open');
+        });
+
+    </script>
+</body>
+</html>

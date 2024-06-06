@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione</title>
+    <!-- Icona -->
+    <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+    <link rel="stylesheet" href="/style/output.css">
+    <style>
+        /* stile per i dispositivi mobili */
+        @media only screen and (max-width: 767px) {
+            /* Nascondi il titolo nel logo */
+            .slide-header .text-xl {
+                display: none;
+            }
+
+            /* Applica i seguenti stili solo per dispositivi con larghezza massima di 767px */
+            .register-form {
+                max-width: 300px; /* Limita la larghezza massima del form per dispositivi mobili */
+                margin: 50px auto; /* Centra il form orizzontalmente e aggiunge spazio sopra e sotto */
+                padding: 15px; /* Riduci il padding del form per dispositivi mobili */
+            }
+
+            .register-form input {
+                color: black; /* Modifica il colore del testo per renderlo visibile sui dispositivi mobili */
+            }
+
+            .register-form button {
+                width: 100%; /* Rendi il pulsante della larghezza del form */
+            }
+
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        header {
+            color: black;
+            transition: transform 0.3s ease;
+            position: relative;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        /* Stili per il menu laterale */
+        #side-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #side-menu.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-link:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-header {
+            animation: slideInFromRight 1s ease-out forwards;
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        h1, p, ul, a {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Stili per il contenuto centrale */
+        .container {
+            max-width: 800px; /* Massima larghezza del contenitore */
+            margin: 0 auto; /* Centra il contenitore orizzontalmente */
+            color: white;
+        }
+
+        /* Stili per il contenuto centrale */
+        .container img {
+            height: 8rem;
+            width: 8rem;
+        }
+
+        /* Stili per il footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            text-align: center;
+            color: black;
+        }
+        
+
+        /* Stili per il modulo di registrazione */
+        .register-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: black;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: white;
+        }
+
+        
+
+        .register-form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .register-form button:hover {
+            background-color: #0056b3;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-4 slide-header">
+            <button id="menu-button" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <!-- Logo e titolo -->
+            <div class="slide-header flex items-center space-x-4 ">
+                <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+                <span class="text-xl text-black font-bold">Pokédex Manager</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu laterale -->
+    <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+        <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+            <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+        </div> <!-- Sezione nera in cima -->
+            
+        <div style="height: 75%; background-color: white;">
+            <ul class="mt-16 space-y-4 text-black">
+                <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+            </ul>
+            <div class="flex justify-center">
+                <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                    X
+                </button>
+            </div>
+            <div class="flex justify-center items-center mt-8">
+                <img src="images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+            </div>
+        </div>
+        <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+    </nav>
+
+    <!-- Contenuto Principale -->
+    <div class="container mx-auto py-8">
+        <h2 class="text-3xl font-bold mb-4 text-center">Registrazione</h2>
+        <div class="register-form">
+            <form id="register-form">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <label for="confirmPassword">Conferma Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit">Registrati</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="shadow-md py-4">
+        <div class="mx-auto text-center">
+            <div style="display: inline-block; margin-right: 20px;">
+                <p>© 2024 Pokédex Manager. Tutti i diritti riservati.</p>
+            </div>
+            <div style="display: inline-block; margin-right: 20px;">
+                <a href="/privacy" class="inline-block mx-4 hover:underline">Privacy</a>
+            </div>
+            <div style="display: inline-block;">
+                <a href="/termini" class="inline-block mx-4 hover:underline">Termini e condizioni</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+    
+        // evento click al pulsante del menu per aprire il menu laterale
+        menuButton.addEventListener('click', () => {
+            sideMenu.classList.add('open');
+        });
+    
+        // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+        closeMenuButton.addEventListener('click', () => {
+            sideMenu.classList.remove('open');
+        });
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+            alert('Le password non corrispondono.');
+            return;
+            }
+
+            const response = await fetch('http://localhost:8000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+            alert('Registrazione effettuata con successo!, Verrai reindirizzato in');
+            // Reindirizzamento
+            window.location.href = data.redirect;
+            } else {
+            alert('Errore: ' + JSON.stringify(data.error));
+            }
+        });
+    </script>
+</body>
+</html>

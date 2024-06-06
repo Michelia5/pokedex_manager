@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Manager - Home</title>
+    <!-- Icona -->
+    <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+    <link rel="stylesheet" href="/style/output.css">
+    <style>
+
+        /* stile per i dispositivi mobili */
+        @media only screen and (max-width: 767px) {
+            /* Nascondi il titolo nel logo */
+            .slide-header .text-xl {
+                display: none;
+            }
+
+            /* Riduci la dimensione del testo della scritta "Pokédex Manager" nella sezione 1 */
+            body .section-1 h1 {
+                font-size: 2.5rem; /* Riduci la dimensione del testo */
+            }
+            /* Riduci l'altezza delle immagini */
+            .section-1, .section-2, img {
+                height: auto;
+                max-height: 900px;
+            }
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .section {
+            height: 110vh;
+            display: flex;
+            flex-direction: column; /* Dispone gli elementi in colonna */
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s;
+        }
+
+        .section-1 {
+            background-image: url('images/other/pokemon.jpg');
+        }
+        .section-2 {
+            background-image: url('images/other/logo.jpg');
+        }
+
+        header {
+            color: black;
+            transition: transform 0.3s ease;
+            position: relative;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        footer {
+            color: black;
+        }
+
+        /* Stili per il testo con sfondo semitrasparente */
+        .text-with-background {
+            color: white; 
+            background: rgba(0, 0, 0, 0.5); 
+            padding: 0.5em 1em; 
+            border-radius: 0.25em; 
+        }
+
+        .btn-body {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-body:hover {
+            background-color: #1e40af;
+            transform: scale(1.1); /* Dimensione aumentata al passaggio del mouse */
+        }
+
+        /* Stili per il menu laterale */
+        #side-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        #side-menu.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-link:hover {
+            text-decoration: underline;
+        }
+
+        .section-1 h1 {
+            font-size: 4rem;
+            margin-bottom: 120px; 
+            color: white;
+            text-shadow: -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000; /* Aggiungi contorno nero al testo */
+        }
+
+        .section-2 p {
+            color: white;
+            text-shadow: -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000;
+            font-size: 1.8rem
+        }
+
+        .section-2 ul {
+            background-color: rgba(0, 0, 0, 0.5); /* Sfondo semitrasparente */
+            padding: 20px; /* Aggiungi spazio intorno al contenuto */
+            border-radius: 10px; /* Bordi arrotondati */
+            text-align: center; /* Centra il testo */
+        }
+
+        .section-2 li {
+            color: white; /* Testo bianco */
+            margin-bottom: 10px; /* Spazio tra gli elementi <li> */
+        }
+
+        @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+        }
+
+        .slide-header {
+            animation: slideInFromRight 1s ease-out forwards;
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        h1, p, ul {
+        animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Stili per la barra di ricerca */
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            border: 1px solid #ccc;
+            border-radius: 20px 0 0 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            outline: none;
+            color: #fff;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            padding: 8px 16px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-4 slide-header">
+            <button id="menu-button" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <!-- Logo e titolo -->
+            <div class="slide-header flex items-center space-x-4 ">
+                <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+                <span class="text-xl text-black font-bold">Pokédex Manager</span>
+            </div>
+        </div>
+        <div class="slide-header">
+            <!-- Form di ricerca -->
+            <form action="/ricerca-pokemon" method="post" class="search-form">
+                <input type="text" name="query" placeholder="Cerca il Pokémon" class="search-input">
+                <button type="submit" class="search-button">Cerca</button>
+            </form>
+        </div>
+    </header>
+    
+    <!-- Menu laterale -->
+    <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+        <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+            <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+        </div> <!-- Sezione nera in cima -->
+            
+        <div style="height: 75%; background-color: white;">
+            <ul class="mt-16 space-y-4 text-black">
+                <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+            </ul>
+            <div class="flex justify-center">
+                <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                    X
+                </button>
+            </div>
+            <div class="flex justify-center items-center mt-8">
+                <img src="images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+            </div>
+        </div>
+        <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+    </nav>
+    
+    <!-- Contenuto principale -->
+    <!-- Sezione 1 -->
+    <div class="section section-1 container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-center lg:text-4xl"><span class="">Pokédex Manager</span></h1>
+        <p class="text-center mt-12 text-xl font-bold text-with-background">Benvenuto in Pokédex Manager, l'applicazione web per esplorare il mondo dei Pokémon! <br> Scopri dettagli, statistiche, evoluzioni e molto altro dei tuoi Pokémon preferiti.</p>
+    </div>
+
+    <hr class="border">
+
+    <!-- Sezione 2 -->
+    <div class="section section-2 container mx-auto px-6 py-8">
+        <div class="mt-12 flex justify-center items-center">
+            <ul class=" font-bold">
+                <li class="text-3xl">Ecco alcune delle funzioni del nostro sito:</li>
+                <li>- Esplora un vasto elenco di Pokémon con dettagli completi su statistiche, abilità, evoluzioni e altro ancora.</li>
+                <li>- Trova facilmente i Pokémon desiderati grazie alla funzionalità di ricerca e ai filtri per tipo, generazione e altro.</li>
+                <li>- Gestisci la tua collezione personale di Pokémon con facilità. Aggiungi, rimuovi e tieni traccia dei Pokémon che possiedi o desideri.</li>
+                <li>- Le informazioni sui Pokémon e le collezioni personali sono salvate in modo persistente, garantendo che i tuoi dati siano sempre accessibili.</li>
+            </ul>
+        </div>
+        <div class="text-center mt-12">
+            <p class="text-xl"><span class="font-bold">Comincia subito a sfogliare la collezione!</span></p>
+            <button id="pokedex-button" class="bg-blue-500 text-white py-2 px-4 rounded-md mt-8 btn-body" style="font-size: 1.25rem;">Sfoglia il pokédex</button>
+        </div>        
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-md py-4">
+        <div class="container mx-auto text-center">
+            <div style="display: inline-block; margin-right: 20px;">
+                <p>© 2024 Pokédex Manager. Tutti i diritti riservati.</p>
+            </div>
+            <div style="display: inline-block; margin-right: 20px;">
+                <a href="/privacy" class="inline-block mx-4 hover:underline">Privacy</a>
+            </div>
+            <div style="display: inline-block;">
+                <a href="/termini" class="inline-block mx-4 hover:underline">Termini e condizioni</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+    
+        // evento click al pulsante del menu per aprire il menu laterale
+        menuButton.addEventListener('click', () => {
+            sideMenu.classList.add('open');
+        });
+    
+        // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+        closeMenuButton.addEventListener('click', () => {
+            sideMenu.classList.remove('open');
+        });
+
+        document.getElementById('pokedex-button').addEventListener('click', function() {
+            window.location.href = '/pokemon';
+        });
+  
+    </script>
+</body>
+</html>

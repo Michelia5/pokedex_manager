@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model pokemon_data {
+  national_number   Int      @id
+  gen               String
+  english_name      String
+  primary_type      String
+  secondary_type    String?
+  classification    String
+  percent_male      Float?
+  percent_female    Float?
+  height_m          Float
+  weight_kg         Float
+  capture_rate      Int
+  hp                Int
+  attack            Int
+  defense           Int
+  speed             Int
+  abilities_0       String
+  abilities_1       String?
+  abilities_special String?
+  is_sublegendary   Boolean
+  is_legendary      Boolean
+  is_mythical       Boolean
+  evochain_0        String
+  evochain_2        String?
+  evochain_4        String?
+  mega_evolution    String?
+  description       String
+  evo1_id           Int?
+  evo2_id           Int?
+  evo3_id           Int?
+  evo4_id           Int?
+  evo5_id           Int?
+  evo6_id           Int?
+  evochain_6        String?
+  evochain_8        String?
+  evochain_10       String?
+  user_collection  user_collection[]
+}
+
+model user_collection {
+  id              Int       @id @default(autoincrement())
+  national_number Int
+  is_wishlist     Boolean   @default(false)
+  pokemon         pokemon_data @relation(fields: [national_number], references: [national_number])
+}

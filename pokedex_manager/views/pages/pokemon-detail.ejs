@@ -1,0 +1,694 @@
+    <!DOCTYPE html>
+    <html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dettagli Pokémon</title>
+        <!-- Icona -->
+        <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+        <link rel="stylesheet" href="/style/output.css">
+        <style>
+            
+            /* Includi lo stile per i dispositivi mobili */
+            @media only screen and (max-width: 767px) {
+                /* Nascondi il titolo nel logo */
+                .slide-header .text-xl {
+                    display: none;
+                }
+
+                .pokemon-details h2 {
+                    font-size: 0.9rem;
+                }
+
+                .pokemon-details p {
+                    font-size: 0.8rem;
+                }
+
+                .pokemon-stats span {
+                    font-size: 1rem;
+                }
+
+                .pokemon-basic-info > div {
+                    flex: 0 0 100%; /* Occupa l'intera larghezza su dispositivi mobili */
+                    margin-right: 0;
+                    margin-bottom: 20px; /* Aggiungi spazio tra le colonne su dispositivi mobili */
+                }
+
+                body .back-button {
+                    width: 80px;
+                }
+
+
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+            
+            header {
+                color: black;
+                transition: transform 0.3s ease;
+                position: relative;
+                animation: slideIn 0.8s ease-out forwards;
+            }
+
+            footer {
+                color: black;
+            }
+
+            /* Stili per il menu laterale */
+            #side-menu {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            #side-menu.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-link:hover {
+                text-decoration: underline;
+            }
+
+
+            @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+            }
+
+            .slide-header {
+                animation: slideInFromRight 1s ease-out forwards;
+            }
+
+            @keyframes slideInFromRight {
+                0% {
+                    transform: translateX(100%);
+                }
+                100% {
+                    transform: translateX(0);
+                }
+                }
+
+            h1, h2, p {
+            animation: fadeIn 0.8s ease-in-out;         
+            }
+
+            .pokemon-details {
+                max-width: 800px;
+                margin: auto;
+                padding: 20px;
+            }
+            .pokemon-header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+
+            .pokemon-header img {
+                max-width: 150px;
+                height: auto;
+            }
+
+            .pokemon-basic-info, .pokemon-stats, .pokemon-evolutions, .pokemon-description {
+                margin-bottom: 20px;
+            }
+            
+            .pokemon-basic-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .pokemon-basic-info > div {
+                flex: 1;
+                min-width: 0; /* Per garantire che le colonne siano flessibili */
+                margin-right: 20px; /* Spazio tra le colonne */
+            }
+
+            .pokemon-basic-info h2 {
+                margin-top: 0;
+            }
+
+            .pokemon-basic-info p {
+                margin-bottom: 10px;
+            }
+
+            .stat-bar {
+                background-color: #e0e0e0;
+                border-radius: 5px;
+                height: 20px; /* Altezza fissa */
+                position: relative;
+                display: flex;
+                align-items: center; /* Allinea il testo verticalmente */
+            }
+
+            .stat-fill {
+                border-radius: 5px;
+                background-color: #4caf50; /* Colore di riempimento della barra */
+                height: 100%; /* Altezza uguale all'altezza della barra */
+                padding-right: 5px; /* Aggiungi spazio alla destra della barra */
+            }
+
+            .stat-text {
+                position: absolute;
+                top: -1;
+                right: 5px; /* Distanza dal bordo destro */
+                line-height: 10px; /* Altezza uguale all'altezza della barra */
+                color: black;
+                font-size: large;
+                font-weight: bold;
+            }
+
+            .stat-label {
+                flex: 0 0 auto;
+                margin-right: 10px; /* Spazio tra il testo e la barra */
+            }
+
+            .national-number {
+                margin-left: 8px; /* Aggiungi spazio tra il nome e il numero nazionale */
+            }
+
+            .header-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #fff; /* Sfondo bianco */
+            }
+
+            .pokemon-basic-info p {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .info-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            .info-cell {
+                border: 1px solid #e0e0e0;
+                padding: 10px;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            .type-image {
+                height: 1.5em; /* Imposta l'altezza dell'immagine uguale all'altezza del testo */
+                width: auto;
+                vertical-align: middle; /* Allinea verticalmente l'immagine al testo */
+            }
+
+            .pokemon-abilities {
+                margin-bottom: 3rem;
+                margin-top: 3rem;
+            }
+
+            .pokemon-description {
+                margin-bottom: 3rem;
+                margin-top: 1rem;
+            }
+
+            .pokemon-evolutions {
+                margin-top: 3rem;
+            }
+
+            body  {
+                color: white;
+            }
+
+            .back-button {
+                background-color: rgb(59 130 246);
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+
+            .back-button:hover {
+                background-color: #1e40af;
+                transform: scale(1.1); /* Dimensione aumentata al passaggio del mouse */
+            }
+
+            .navigation-buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+            .nav-button {
+                background-color: rgb(59 130 246);
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 12px;
+            }
+
+            .pokemon-basic-info a {
+                color: rgb(59 130 246);
+            }
+
+            /* Stili per la barra di ricerca */
+            .search-form {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-input {
+                border: 1px solid #ccc;
+                border-radius: 20px 0 0 20px;
+                padding: 8px 12px;
+                font-size: 12px;
+                outline: none;
+                color: #fff; /* Testo bianco */
+            }
+
+            .search-button {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 0 20px 20px 0;
+                padding: 8px 16px;
+                font-size: 12px;
+                outline: none;
+                cursor: pointer;
+            }
+
+            .evo-name {
+                text-align: center;
+                font-size: large;
+            }
+
+            .pokemon-evolutions .info-cell {
+                text-align: center;
+            }
+
+            .centered-image {
+                display: block;
+                margin: 0 auto;
+            }
+            
+            /* Stili per i pulsanti di aggiunta */
+            .additional-buttons {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+            }
+
+            .additional-button {
+                background-color: #ff9800;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 12px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-4 slide-header">
+                <button id="menu-button" class="focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <!-- Logo e titolo -->
+                <div class="slide-header flex items-center space-x-4 ">
+                    <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+                    <span class="text-xl text-black font-bold">Pokédex Manager</span>
+                </div>
+            </div>
+            <div class="slide-header">
+                <form action="/ricerca-pokemon" method="post" class="search-form">
+                    <input type="text" name="query" placeholder="Cerca il Pokémon" class="search-input">
+                    <button type="submit" class="search-button">Cerca</button>
+                </form>          
+            </div>
+        </header>
+        
+        <!-- Menu laterale -->
+        <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+            <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+                <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+            </div> <!-- Sezione nera in cima -->
+                
+            <div style="height: 75%; background-color: white;">
+                <ul class="mt-16 space-y-4 text-black">
+                    <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                    <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                    <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                    <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+                </ul>
+                <div class="flex justify-center">
+                    <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                        X
+                    </button>
+                </div>
+                <div class="flex justify-center items-center mt-8">
+                    <img src="/images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+                </div>
+            </div>
+            <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+        </nav>
+
+        <!-- Contenuto Principale -->
+        <div class="pokemon-details">
+            <!-- Intestazione -->
+            <div class="pokemon-header" style="position: relative;">
+                <div class="header-overlay"></div> <!-- Sfondo -->
+                <h1 class="text-4xl font-bold text-black" style="position: relative; z-index: 1;">
+                    <%= pokemon.english_name %>
+                    <span class="national-number text-4xl">#<%= pokemon.national_number %></span>
+                </h1>
+                <img src="/images/large/<%= ('000' + pokemon.national_number).slice(-3) %>.png" alt="<%= pokemon.english_name %>" style="position: relative; z-index: 1;">
+                <a href="/pokemon" style="position: absolute; left: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <img src="/images/other/arrow-back.svg" alt="Logo" class="w-10 h-10">
+                </a>
+            </div>
+            
+
+            <!-- Pulsanti di navigazione -->
+            <div class="navigation-buttons" style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;">
+                <a href="/pokemon/<%= parseInt(pokemon.national_number) - 1 %>" id="prevButton"><button class="nav-button">Precedente</button></a>
+                <a href="/pokemon/<%= parseInt(pokemon.national_number) + 1 %>" id="nextButton"><button class="nav-button">Successivo</button></a>
+            </div>
+            <div class="additional-buttons">
+                <button class="additional-button" onclick="aggiungiACollezione()">Aggiungi a collezione</button>
+                <button class="additional-button" onclick="aggiungiAListaDesideri()">Aggiungi a lista desideri</button>
+            </div>
+
+            <!-- Descrizione -->
+            <div class="pokemon-description">
+                <h2 class="text-2xl font-bold">Descrizione:</h2>
+                <p><%= pokemon.description %></p>
+            </div>
+
+            <!-- Informazioni di Base -->
+            <div class="pokemon-basic-info">
+                <h2 class="text-2xl font-bold ">Informazioni di Base:</h2>
+                <table class="info-table">
+                <tr>
+                    <td class="info-cell">
+                        <p>
+                            <%= pokemon.primary_type %>
+                            <img src="/images/type/<%= pokemon.primary_type.toLowerCase() %>.png" alt="<%= pokemon.primary_type %>" class="type-image">
+                        </p>
+                        <% if (pokemon.secondary_type) { %>
+                            <p>
+                                <%= pokemon.secondary_type %>
+                                <img src="/images/type/<%= pokemon.secondary_type.toLowerCase() %>.png" alt="<%= pokemon.secondary_type %>" class="type-image">
+                            </p>
+                        <% } %>
+                    </td>
+                    <td class="info-cell">
+                        <p>Altezza: <%= pokemon.height_m %> m</p>
+                        <p>Peso: <%= pokemon.weight_kg %> kg</p>
+                    </td>
+                    <td class="info-cell">
+                        <% if (pokemon.percent_male !== null && pokemon.percent_female !== null) { %>
+                            <p>Maschio: <%= pokemon.percent_male %>%</p>
+                            <p>Femmina: <%= pokemon.percent_female %>%</p>
+                        <% } else { %>
+                            <p>Sconosciuto</p>
+                        <% } %>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td class="info-cell">
+                            <h2 class="text-xl font-semibold">Classificazione:</h2>
+                            <p><%= pokemon.classification %></p>
+                        </td>
+                        <td class="info-cell">
+                            <h2 class="text-xl font-semibold">Tasso di Cattura:</h2>
+                            <p><%= pokemon.capture_rate %> <a href="https://bulbapedia.bulbagarden.net/wiki/Catch_rate" class="text-xs underline">Info Tasso di Cattura</a> </p>
+                        </td>
+                        <td class="info-cell">
+                            <h2 class="text-xl font-semibold">Rarità:</h2>
+                            <% if (pokemon.is_mythical) { %>
+                                <p>Mitico</p>
+                            <% } %>
+                            <% if (pokemon.is_legendary) { %>
+                                <p>Leggendario</p>
+                            <% } %>
+                            <% if (!pokemon.is_mythical && !pokemon.is_legendary) { %>
+                                <p>Normale</p>
+                            <% } %>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+                
+            <!-- Abilità -->
+            <div class="pokemon-abilities">
+                <h2 class="text-2xl font-bold">Abilità:</h2>
+                <table class="info-table">
+                    <tr>
+                        <td class="info-cell">
+                            <h3 class="text-xl font-semibold">Primaria:</h3>
+                            <p><%= pokemon.abilities_0 %></p>
+                        </td>
+                        <% if (pokemon.abilities_1) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl font-semibold">Secondaria:</h3>
+                                <p><%= pokemon.abilities_1 %></p>
+                            </td>
+                        <% } else { %>
+                            <td class="info-cell">
+                                <p>Nessuna abilità secondaria</p>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.abilities_special) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl font-semibold">Speciale:</h3>
+                                <p><%= pokemon.abilities_special %></p>
+                            </td>
+                        <% } else { %>
+                            <td class="info-cell">
+                                <p>Nessuna abilità speciale</p>
+                            </td>
+                        <% } %>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Statistiche -->
+            <div class="pokemon-stats">
+                <h2 class="text-2xl font-bold text-center">Statistiche</h2>
+                <div>
+                    <span class="stat-label">HP</span>
+                    <div class="stat-bar">
+                        <span class="stat-fill" style="width: <%= pokemon.hp %>%;"></span>
+                        <span class="stat-text"><%= pokemon.hp %></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="stat-label">Attacco</span>
+                    <div class="stat-bar">
+                        <span class="stat-fill" style="width: <%= pokemon.attack %>%;"></span>
+                        <span class="stat-text"><%= pokemon.attack %></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="stat-label">Difesa</span>
+                    <div class="stat-bar">
+                        <span class="stat-fill" style="width: <%= pokemon.defense %>%;"></span>
+                        <span class="stat-text"><%= pokemon.defense %></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="stat-label">Velocità</span>
+                    <div class="stat-bar">
+                        <span class="stat-fill" style="width: <%= pokemon.speed %>%;"></span>
+                        <span class="stat-text"><%= pokemon.speed %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evoluzioni -->
+            <div class="pokemon-evolutions">
+                <h2 class="text-2xl font-bold">Evoluzioni:</h2>
+                <table class="info-table">
+                    <tr>
+                        <% if (pokemon.evochain_0) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Prima:</h3>
+                                <a href="/pokemon/<%= pokemon.evo1_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo1_id).slice(-3) %>.png" alt="Precedente" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_0 %></p>
+                                </a>
+                                
+                            </td>
+                        <% } %>
+                        <% if (pokemon.evochain_2) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Seconda:</h3>
+                                <a href="/pokemon/<%= pokemon.evo2_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo2_id).slice(-3) %>.png" alt="Successiva" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_2 %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.evochain_4) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Terza:</h3>
+                                <a href="/pokemon/<%= pokemon.evo3_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo3_id).slice(-3) %>.png" alt="Successiva" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_4 %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.evochain_6) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Quarta:</h3>
+                                <a href="/pokemon/<%= pokemon.evo4_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo4_id).slice(-3) %>.png" alt="Successiva" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_6 %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.evochain_8) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Quinta:</h3>
+                                <a href="/pokemon/<%= pokemon.evo5_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo5_id).slice(-3) %>.png" alt="Successiva" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_8 %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.evochain_10) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Sesta:</h3>
+                                <a href="/pokemon/<%= pokemon.evo6_id %>">
+                                    <img src="/images/small/<%= ('000' + pokemon.evo6_id).slice(-3) %>.png" alt="Successiva" class="centered-image">
+                                    <p class="evo-name"><%= pokemon.evochain_10 %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                        <% if (pokemon.mega_evolution) { %>
+                            <td class="info-cell">
+                                <h3 class="text-xl">Mega Evoluzione:</h3>
+                                <br>
+                                <br>
+                                    <p><%= pokemon.mega_evolution %></p>
+                                </a>
+                            </td>
+                        <% } %>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+        <script>
+            const menuButton = document.getElementById('menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const sideMenu = document.getElementById('side-menu');
+        
+            // evento click al pulsante del menu per aprire il menu laterale
+            menuButton.addEventListener('click', () => {
+                sideMenu.classList.add('open');
+            });
+        
+            // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+            closeMenuButton.addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+            });
+
+            // Ottieni il numero nazionale del Pokémon corrente
+            const currentNationalNumber = <%= pokemon.national_number %>;
+
+            // Seleziona i pulsanti di navigazione
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            // Nascondi il pulsante "Precedente" se ci troviamo al primo Pokémon
+            if (currentNationalNumber === 1) {
+                prevButton.style.display = 'none';
+            }
+
+            // Nascondi il pulsante "Successivo" se ci troviamo all'ultimo Pokémon
+            if (currentNationalNumber === 386) { // Assumi che maxNationalNumber sia il numero totale massimo di Pokémon
+                nextButton.style.display = 'none';
+            }
+
+
+            // Funzione per aggiungere il Pokémon alla collezione
+            function aggiungiACollezione() {
+                fetch('http://localhost:8000/api/aggiungi_collezione', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        pokemonId: currentNationalNumber // Utilizza il numero nazionale del Pokémon corrente
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        alert('Il Pokémon è stato aggiunto alla tua collezione!');
+                    } else {
+                        alert('Il Pokémon è già nella collezione o nella lista dei desideri.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                    alert('Si è verificato un errore. Riprova più tardi.');
+                });
+            }
+
+            // Funzione per aggiungere il Pokémon alla lista dei desideri
+            function aggiungiAListaDesideri() {
+                fetch('http://localhost:8000/api/aggiungi_lista_desideri', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        pokemonId: currentNationalNumber // Utilizza il numero nazionale del Pokémon corrente
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        alert('Il Pokémon è stato aggiunto alla tua lista desideri!');
+                    } else {
+                        alert('Il Pokémon è già nella collezione o nella lista dei desideri.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                    alert('Si è verificato un errore. Riprova più tardi.');
+                });
+            }
+
+        </script>
+    </body>
+    </html>

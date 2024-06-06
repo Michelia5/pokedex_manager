@@ -1,0 +1,307 @@
+    <!DOCTYPE html>
+    <html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokémon</title>
+        <!-- Icona -->
+        <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
+        <link rel="stylesheet" href="/style/output.css">
+        <style>
+            /* Includi lo stile per i dispositivi mobili */
+            @media only screen and (max-width: 767px) {
+                /* Nascondi il titolo nel logo */
+                .slide-header .text-xl {
+                    display: none;
+                }
+
+                body .section-1 h1 {
+                    font-size: 2.5rem; /* Riduci la dimensione del testo */
+                }
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+            
+            header {
+                color: black;
+                transition: transform 0.3s ease;
+                position: relative;
+                animation: slideIn 0.8s ease-out forwards;
+            }
+
+            footer {
+                color: black;
+            }
+
+            /* Stili per il menu laterale */
+            #side-menu {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            #side-menu.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-link:hover {
+                text-decoration: underline;
+            }
+
+            .section-1 h1 {
+                font-size: 4rem;
+                margin-bottom: 120px; 
+                color: white;
+                text-shadow: -1px -1px 0 #000,  
+                    1px -1px 0 #000,
+                    -1px 1px 0 #000,
+                    1px 1px 0 #000; /* Aggiungi contorno nero al testo */
+            }
+
+            @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+            }
+
+            .slide-header {
+                animation: slideInFromRight 1s ease-out forwards;
+            }
+
+            @keyframes slideInFromRight {
+                0% {
+                    transform: translateX(100%);
+                }
+                100% {
+                    transform: translateX(0);
+                }
+            }
+
+            h1, h2, p {
+            animation: fadeIn 0.8s ease-in-out;
+            
+            }
+
+            /* Stili per la barra di ricerca */
+            .search-form {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-input {
+                border: 1px solid #ccc;
+                border-radius: 20px 0 0 20px;
+                padding: 8px 12px;
+                font-size: 12px;
+                outline: none;
+                color: #fff; /* Testo bianco */
+            }
+
+            .search-button {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 0 20px 20px 0;
+                padding: 8px 16px;
+                font-size: 12px;
+                outline: none;
+                cursor: pointer;
+            }
+
+            .pokemon-card:hover {
+                transform: translateY(-5px);
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-4 slide-header">
+                <button id="menu-button" class="focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <!-- Logo e titolo -->
+                <div class="slide-header flex items-center space-x-4 ">
+                    <img src="/images/other/sfondo.jpg" alt="Logo" class="w-10 h-10">
+                    <span class="text-xl text-black font-bold">Pokédex Manager</span>
+                </div>
+            </div>
+            <div class="slide-header">
+                <form action="/ricerca-pokemon" method="post" class="search-form">
+                    <input type="text" name="query" placeholder="Cerca il Pokémon" class="search-input">
+                    <button type="submit" class="search-button">Cerca</button>
+                </form>             
+            </div>
+        </header>
+        
+        <!-- Menu laterale -->
+        <nav id="side-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20">
+            <div style="height: 10%; background-color: #101d47;" class="flex items-center justify-center">
+                <p class="text-center items-center font-bold text-white">Pokédex Manager</p>
+            </div> <!-- Sezione nera in cima -->
+                
+            <div style="height: 75%; background-color: white;">
+                <ul class="mt-16 space-y-4 text-black">
+                    <li><a href="/home" class="block py-2 px-4 hover:bg-gray-200">- Home</a></li>
+                    <li><a href="/pokemon" class="block py-2 px-4 hover:bg-gray-200">- Pokémon</a></li>
+                    <li><a href="/collezione" class="block py-2 px-4 hover:bg-gray-200">- Collezione</a></li>
+                    <li><a href="/informazioni" class="block py-2 px-4 hover:bg-gray-200">- Informazioni</a></li>
+                </ul>
+                <div class="flex justify-center">
+                    <button id="close-menu" class="focus:outline-none mt-12 bg-blue-500 text-black py-2 px-4 rounded-md" style="position: relative; z-index: 21;">
+                        X
+                    </button>
+                </div>
+                <div class="flex justify-center items-center mt-8">
+                    <img src="/images/other/eevee.jpeg" alt="Immagine" width="200" height="200">
+                </div>
+            </div>
+            <div style="height: 15%; background-color: #101d47;"></div> <!-- Sezione nera in fondo -->
+        </nav>
+
+        <!-- Contenuto principale -->
+        <div class="section section-1 container mx-auto px-6 py-8">
+            <h1 class="text-2xl font-bold text-center my-8">Lista dei Pokémon</h1>
+
+            <!-- Filtro -->
+            <div class="flex justify-center items-center mb-4">
+                <p class="text-xl font-bold">Filtri per tipo:</p>
+                <div class="flex">
+                    <select id="primaryTypeFilter" class="px-3 py-2 rounded-md border border-gray-300" style="margin-left: 1rem; margin-right: 0.5rem;">
+                        <option value="">Tipo Primario</option>
+                        <!-- Opzioni per i tipi primari -->
+                        <option value="Acciaio">Acciaio</option>
+                        <option value="Acqua">Acqua</option>
+                        <option value="Buio">Buio</option>
+                        <option value="Coleottero">Coleottero</option>
+                        <option value="Drago">Drago</option>
+                        <option value="Elettro">Elettro</option>
+                        <option value="Erba">Erba</option>
+                        <option value="Folletto">Folletto</option>
+                        <option value="Fuoco">Fuoco</option>
+                        <option value="Ghiaccio">Ghiaccio</option>
+                        <option value="Lotta">Lotta</option>
+                        <option value="Normale">Normale</option>
+                        <option value="Psico">Psico</option>
+                        <option value="Roccia">Roccia</option>
+                        <option value="Spettro">Spettro</option>
+                        <option value="Terra">Terra</option>
+                        <option value="Veleno">Veleno</option>
+                    </select>
+
+                    <select id="secondaryTypeFilter" class="px-3 py-2 rounded-md border border-gray-300">
+                        <option value="">Tipo Secondario</option>
+                        <!-- Opzioni per i tipi secondari -->
+                        <option value="Acciaio">Acciaio</option>
+                        <option value="Acqua">Acqua</option>
+                        <option value="Buio">Buio</option>
+                        <option value="Coleottero">Coleottero</option>
+                        <option value="Drago">Drago</option>
+                        <option value="Elettro">Elettro</option>
+                        <option value="Erba">Erba</option>
+                        <option value="Folletto">Folletto</option>
+                        <option value="Fuoco">Fuoco</option>
+                        <option value="Ghiaccio">Ghiaccio</option>
+                        <option value="Lotta">Lotta</option>
+                        <option value="Psico">Psico</option>
+                        <option value="Roccia">Roccia</option>
+                        <option value="Spettro">Spettro</option>
+                        <option value="Terra">Terra</option>
+                        <option value="Veleno">Veleno</option>
+                        <option value="Volante">Volante</option>                       
+                    </select>
+                </div>
+            </div>
+
+            <div class="pokemon-grid grid grid-cols-1 md:grid-cols-5 gap-4">
+                <% pokemons.forEach((pokemon, index) => { %>
+                    <a href="/pokemon/<%= pokemon.national_number %>" class="pokemon-card" 
+                        data-primary-type="<%= pokemon.primary_type %>" 
+                        data-secondary-type="<%= pokemon.secondary_type %>">
+                        <div class="pokemon-card-inner bg-white p-4 shadow-md rounded-lg text-center">
+                            <img src="/images/small/<%= ('000' + pokemon.national_number).slice(-3) %>.png" alt="<%= pokemon.english_name %>" class="mx-auto mb-4">
+                            <div class="flex">
+                                <p class="text-lg text-black">#<%= pokemon.national_number %></p>
+                                <p class="text-lg font-bold text-black">&nbsp;<%= pokemon.english_name %></p>                        
+                            </div>
+                        </div>
+                    </a>                    
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white shadow-md py-4">
+            <div class="container mx-auto text-center">
+                <div style="display: inline-block; margin-right: 20px;">
+                    <p>© 2024 Pokédex Manager. Tutti i diritti riservati.</p>
+                </div>
+                <div style="display: inline-block; margin-right: 20px;">
+                    <a href="/privacy" class="inline-block mx-4 hover:underline">Privacy Policy</a>
+                </div>
+                <div style="display: inline-block;">
+                    <a href="/termini" class="inline-block mx-4 hover:underline">Termini e condizioni</a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            const pokemons = []
+
+
+            const menuButton = document.getElementById('menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const sideMenu = document.getElementById('side-menu');
+        
+            // evento click al pulsante del menu per aprire il menu laterale
+            menuButton.addEventListener('click', () => {
+                sideMenu.classList.add('open');
+            });
+        
+            // evento click al pulsante di chiusura del menu per chiudere il menu laterale
+            closeMenuButton.addEventListener('click', () => {
+                sideMenu.classList.remove('open');
+            });
+
+
+            const primaryTypeFilter = document.getElementById('primaryTypeFilter');
+            const secondaryTypeFilter = document.getElementById('secondaryTypeFilter');
+            const pokemonCards = document.querySelectorAll('.pokemon-card');
+
+            // Aggiungi un evento di cambio per entrambi i filtri
+            [primaryTypeFilter, secondaryTypeFilter].forEach(filter => {
+                filter.addEventListener('change', () => {
+                    const primaryType = primaryTypeFilter.value;
+                    const secondaryType = secondaryTypeFilter.value;
+
+                    // Nascondi tutti i Pokémon
+                    pokemonCards.forEach(card => {
+                        card.style.display = 'none';
+                    });
+
+                    // Filtra e mostra solo i Pokémon che soddisfano i criteri
+                    pokemonCards.forEach(card => {
+                        const primaryTypeMatch = primaryType === '' || card.dataset.primaryType === primaryType;
+                        const secondaryTypeMatch = secondaryType === '' || card.dataset.secondaryType === secondaryType;
+
+                        if (primaryTypeMatch && secondaryTypeMatch) {
+                            card.style.display = 'block';
+                        }
+                    });
+                });
+            });
+
+
+        </script>
+    </body>
+    </html>
+
