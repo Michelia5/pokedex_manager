@@ -13,6 +13,7 @@ Pokedex Manager è un'applicazione web che permette agli utenti di esplorare e g
 - [Utilizzo](#utilizzo)
 - [Licenza](#licenza)
 - [Contatti](#contatti)
+- [Screenshots](#screenshots)
 
 ## Struttura del Progetto
 
@@ -123,6 +124,25 @@ npm run dev
 - Rimuovi Pokémon dalla tua collezione.
 - Tieni traccia dei Pokémon che possiedi o desideri.
 ```
+
+### Screenshots
+
+#### Homepage
+![Homepage](screenshots/homepage.png)
+
+#### Lista Pokémon
+![Lista Pokémon](screenshots/lista_pokémon.png)
+
+#### Dettagli Pokémon
+![Dettagli Pokémon](screenshots/dettagli_pokémon.png)
+
+#### Ricerca
+![Ricerca](screenshots/ricerca.png)
+
+#### Gestione Collezione
+![Gestione Collezione](screenshots/collezione.png)
+
+
 ### Licenza
 ```
 Questo progetto è licenziato sotto la licenza MIT - vedi il file LICENSE per i dettagli.

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risultati Ricerca Pokémon</title>
-    <!-- Icona -->
+    <title>Risultati Ricerca</title>
     <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
     <link rel="stylesheet" href="/style/output.css">
     <style>
@@ -14,12 +13,6 @@
             .slide-header .text-xl {
                 display: none;
             }
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
         }
 
         header {
@@ -176,11 +169,12 @@
         <h2 class="text-2xl font-bold mb-4">Risultati della Ricerca:</h2>
         <% if (Array.isArray(pokemons) && pokemons.length > 0) { %>
             <ul>
-                <!-- Loop attraverso i risultati della ricerca -->
+                <!-- Loop dei risultati della ricerca -->
                 <% pokemons.forEach((pokemon, index) => { %>
                     <li class="flex items-center">
                         <!-- Immagine del Pokémon -->
                         <img src="/images/small/<%= ('000' + pokemon.national_number).slice(-3) %>.png" alt="<%= pokemon.english_name %>">
+
                         <!-- Nome del Pokémon con link -->
                         <a href="/pokemon/<%= pokemon.national_number %>" class="hover:underline text-xl">-<%= pokemon.english_name %></a>
                     </li>
@@ -191,7 +185,7 @@
                 <% }) %>
             </ul>
         <% } else { %>
-            <p class="text-gray-500">Nessun Pokémon trovato.</p>
+            <p class="text-white text-xl mt-8">Nessun Pokémon trovato.</p>
         <% } %>
     </div>
 

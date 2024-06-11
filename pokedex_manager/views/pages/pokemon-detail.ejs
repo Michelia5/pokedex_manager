@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dettagli Pokémon</title>
-        <!-- Icona -->
         <link rel="icon" type="image/png" href="/images/other/sfondo.jpg">
         <link rel="stylesheet" href="/style/output.css">
         <style>
@@ -39,12 +38,6 @@
                 }
 
 
-            }
-
-            body, html {
-                margin: 0;
-                padding: 0;
-                height: 100%;
             }
             
             header {
@@ -592,15 +585,6 @@
                                 </a>
                             </td>
                         <% } %>
-                        <% if (pokemon.mega_evolution) { %>
-                            <td class="info-cell">
-                                <h3 class="text-xl">Mega Evoluzione:</h3>
-                                <br>
-                                <br>
-                                    <p><%= pokemon.mega_evolution %></p>
-                                </a>
-                            </td>
-                        <% } %>
                     </tr>
                 </table>
             </div>
@@ -629,12 +613,12 @@
             const nextButton = document.getElementById('nextButton');
 
             // Nascondi il pulsante "Precedente" se ci troviamo al primo Pokémon
-            if (currentNationalNumber === 1) {
+            if (currentNationalNumber == 1) {
                 prevButton.style.display = 'none';
             }
 
             // Nascondi il pulsante "Successivo" se ci troviamo all'ultimo Pokémon
-            if (currentNationalNumber === 386) { // Assumi che maxNationalNumber sia il numero totale massimo di Pokémon
+            if (currentNationalNumber == 386) {  // Al momento il pokémon con "id" maggiore è 386
                 nextButton.style.display = 'none';
             }
 
@@ -647,7 +631,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        pokemonId: currentNationalNumber // Utilizza il numero nazionale del Pokémon corrente
+                        pokemonId: currentNationalNumber // Utilizza il national number del Pokémon corrente
                     })
                 })
                 .then(response => response.json())

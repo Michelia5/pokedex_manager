@@ -7,10 +7,10 @@ import "dotenv/config";
 const PORT = process.env.PORT || 8000;
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Middleware per analizzare i dati della richiesta POST
 app.use(cors({ origin: "http://localhost:3000"}));
-
 
 
 // Configura EJS come motore di visualizzazione
@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
   
-// Rotta per ottenere i Pokémon in base alla query di ricerca
+// Rotta per ottenere i Pokémon
 app.get('/pokemon', async (req, res) => {
   try {
     const { query } = req.query;
@@ -40,7 +40,7 @@ app.get('/pokemon', async (req, res) => {
       where: whereClause
     });
     // Restituisci i risultati
-    if (pokemons.length === 0) {
+    if (pokemons.length == 0) {
       return res.status(404).json({ error: 'Nessun Pokémon trovato' });
     }
     res.json(pokemons);
@@ -49,6 +49,7 @@ app.get('/pokemon', async (req, res) => {
     res.status(500).json({ error: 'Errore nel recupero dei dati dei Pokémon' });
   }
 });
+
 
 // Rotta per la pagina dettagliata di un Pokémon
 app.get('/pokemon/:id', async (req, res) => {
@@ -63,18 +64,18 @@ app.get('/pokemon/:id', async (req, res) => {
 
     // Verifica se il Pokémon è stato trovato
     if (!pokemon) {
-      // Se il Pokémon non è stato trovato, restituisci uno stato 404
+      // Se non trovato, restituisci uno stato 404
       return res.status(404).json({ error: 'Pokémon non trovato' });
     }
 
-    // Se il Pokémon è stato trovato, restituisci i dettagli del Pokémon come JSON
+    // Se il Pokémon è stato trovato, restituisci i dettagli come JSON
     res.json(pokemon);
   } catch (error) {
-    // Gestisci gli errori
     console.error('Errore nel recupero dei dettagli del Pokémon:', error);
     res.status(500).json({ error: 'Errore nel recupero dei dettagli del Pokémon' });
   }
 });
+
 
 // Rotta per la ricerca dei Pokémon
 app.post('/ricerca-pokemon', async (req, res) => {
@@ -85,17 +86,15 @@ app.post('/ricerca-pokemon', async (req, res) => {
     if (query) {
       whereClause.OR = [
         { national_number: parseInt(query) },
-        { english_name: { contains: query } } // Utilizza contains per la ricerca parziale
+        { english_name: { contains: query } } // Utilizzo contains per la ricerca parziale
       ];
     }
 
-    console.log('Richiesta ricevuta per /ricerca-pokemon con la query:', query);
     const pokemons = await prisma.pokemon_data.findMany({
       where: whereClause
     });
 
-    console.log('Pokémon ottenuti:', pokemons);
-    if (pokemons.length === 0) {
+    if (pokemons.length == 0) {
       return res.status(404).json({ error: 'Nessun Pokémon trovato' });
     }
 
@@ -103,6 +102,25 @@ app.post('/ricerca-pokemon', async (req, res) => {
   } catch (error) {
     console.error('Errore nella ricerca dei Pokémon:', error);
     res.status(500).json({ error: 'Errore nella ricerca dei Pokémon' });
+  }
+});
+
+
+// Visualizza la collezione personale e la lista dei desideri
+app.get('/api/collezione', async (req, res) => {
+  try {
+    const collection = await prisma.user_collection.findMany({
+      where: { is_wishlist: false },
+      include: { pokemon: true }
+    });
+    const wishlist = await prisma.user_collection.findMany({
+      where: { is_wishlist: true },
+      include: { pokemon: true }
+    });
+    res.json({ collection, wishlist });
+  } catch (error) {
+    console.error('Errore nel recupero della collezione:', error);
+    res.status(500).json({ error: 'Errore nel recupero della collezione' });
   }
 });
 
@@ -176,6 +194,7 @@ app.post('/api/rimuovi_da_collezione', async (req, res) => {
   }
 });
 
+
 // Sposta un Pokémon tra la collezione personale e la lista dei desideri
 app.post('/api/sposta_pokemon', async (req, res) => {
   const { pokemonId, isWishlist } = req.body;
@@ -192,26 +211,8 @@ app.post('/api/sposta_pokemon', async (req, res) => {
   }
 });
 
-// Visualizza la collezione personale e la lista dei desideri
-app.get('/api/collezione', async (req, res) => {
-  try {
-    const collection = await prisma.user_collection.findMany({
-      where: { is_wishlist: false },
-      include: { pokemon: true }
-    });
-    const wishlist = await prisma.user_collection.findMany({
-      where: { is_wishlist: true },
-      include: { pokemon: true }
-    });
-    res.json({ collection, wishlist });
-  } catch (error) {
-    console.error('Errore nel recupero della collezione:', error);
-    res.status(500).json({ error: 'Errore nel recupero della collezione' });
-  }
-});
 
-
-// Rotta per ottenere solo i Pokémon della collezione
+// Rotta per ottenere solo le statistiche sui Pokémon della collezione
 app.get('/api/collezione-pokemon', async (req, res) => {
   try {
     // Recupera solo i Pokémon della collezione dell'utente
